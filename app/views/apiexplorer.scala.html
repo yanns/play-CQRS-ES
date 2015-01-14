@@ -1,0 +1,91 @@
+@(apis: Seq[(String, String)])
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>REST API</title>
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+    <script type="text/javascript" src="@routes.Assets.versioned("lib/jquery/jquery.js")"></script>
+        <script type="text/javascript">
+        $( document ).ready(function() {
+
+            $("#api-description" ).find('.resource-endpoint' ).each(function() {
+                var $this   = $(this),
+                method  = $this.data('method'),
+                uri     = $this.data('uri'),
+
+                $callStatus   = $this.find('.call-status'),
+                $callResponse = $this.find('.call-response');
+
+
+                var submit = function(event) {
+                    var start = new Date().getTime();
+                    event.preventDefault();
+
+                    $callStatus.text("...");
+
+                    // override URI with input field if exists
+                    $this.find('input.linkref' ).each(function() {
+                        uri = $(this ).val();
+                    });
+
+                    var payload = $this.find('.payload').val( ),
+                    ajaxParam = {
+                        type: method,
+                        url: uri,
+                        data: payload,
+                    };
+                    if (payload) {
+                        ajaxParam.contentType = 'application/json';
+                    }
+
+                    var displayStatus = function(jqXHR, textStatus) {
+                        var status = jqXHR.status,
+                            duration = new Date().getTime() - start;
+
+                        $callStatus.text("response status: " + status + " (" + textStatus + ") (in " + duration + "ms)");
+                    }
+
+                    $.ajax(ajaxParam).done ( function ( data, textStatus, jqXHR) {
+                        displayStatus(jqXHR, textStatus);
+                        var response = jqXHR.responseText;
+                        if (jqXHR.responseJSON) {
+                            response = JSON.stringify(jqXHR.responseJSON, null, 4);
+                        }
+                        $callResponse.text(response);
+
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                        displayStatus(jqXHR, textStatus);
+                        $callResponse.text(jqXHR.responseText);
+                    });
+                };
+                $this.find('.link' ).on('click', submit);
+                $this.find('input.linkref' ).keypress(function(event) {
+                    if (event.which == 13) {
+                        submit(event);
+                    }
+                });
+            });
+        });
+        </script>
+</head>
+<body>
+<p>DOC:</p>
+<ul id="api-description">
+    @for(api <- apis) {
+    <li class="resource-endpoint"
+        data-method="@api._1"
+        data-uri="@api._2">
+        <a class="link" href="@api._2">@api._1</a> <input type="text" class="linkref" value="@api._2" size="111">
+        @if(api._1 == "POST" || api._1 == "PUT") {
+        <br/>
+        <textarea class="payload" cols="80" rows="4"></textarea>
+        }
+        <div class="call-status"></div>
+        <pre><code class="call-response"></code></pre>
+    </li>
+    }
+</ul>
+</body>
+</html>
