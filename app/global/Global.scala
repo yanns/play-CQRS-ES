@@ -23,4 +23,8 @@ object Global extends GlobalSettings {
   override def onBadRequest(request: RequestHeader, error: String): Future[Result] = {
     Future.successful(BadRequest(Json.obj("error" -> error)))
   }
+
+  override def onError(request: RequestHeader, ex: Throwable): Future[Result] = {
+    Future.successful(InternalServerError(Json.obj("error" -> ex.getMessage)))
+  }
 }

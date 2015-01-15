@@ -1,4 +1,4 @@
-@(apis: Seq[(String, String)])
+@(apis: Seq[controllers.Application.EndPoint])
 
 <!DOCTYPE html>
 <html>
@@ -75,12 +75,12 @@
 <ul id="api-description">
     @for(api <- apis) {
     <li class="resource-endpoint"
-        data-method="@api._1"
-        data-uri="@api._2">
-        <a class="link" href="@api._2">@api._1</a> <input type="text" class="linkref" value="@api._2" size="111">
-        @if(api._1 == "POST" || api._1 == "PUT") {
+        data-method="@api.httpVerb"
+        data-uri="@api.uri">
+        <a class="link" href="@api.uri">@api.httpVerb</a> <input type="text" class="linkref" value="@api.uri" size="111">
+        @if(api.httpVerb == "POST" || api.httpVerb == "PUT") {
         <br/>
-        <textarea class="payload" cols="80" rows="4"></textarea>
+        <textarea class="payload" cols="80" rows="4">@api.example.getOrElse("")</textarea>
         }
         <div class="call-status"></div>
         <pre><code class="call-response"></code></pre>
