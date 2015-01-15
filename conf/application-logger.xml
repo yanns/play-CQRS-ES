@@ -12,6 +12,7 @@
     <logger name="play" level="WARNING" />
     <logger name="application" level="DEBUG" />
     <logger name="service" level="DEBUG" />
+    <logger name="domain" level="DEBUG" />
 
     <root level="ERROR">
         <appender-ref ref="STDOUT" />

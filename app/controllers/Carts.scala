@@ -43,6 +43,13 @@ object Carts extends Controller {
   }
 
 
+  def delete(id: String) = Action.async {
+    sendCmd(DeleteCart(id)) map {
+      case _ => NoContent
+    }
+  }
+
+
   val cartAggregateManager = Global.system.actorOf(CartAggregateManager.props)
 
   def sendCmd(cmd: Command): Future[State] = {

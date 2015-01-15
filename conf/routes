@@ -3,10 +3,11 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
+GET     /                           controllers.ApiExplorer.index
 
 GET     /api/carts                  controllers.Carts.list
 GET     /api/carts/:id              controllers.Carts.get(id)
+DELETE  /api/carts/:id              controllers.Carts.delete(id)
 POST    /api/carts                  controllers.Carts.add
 
 # Map static resources from the /public folder to the /assets URL path

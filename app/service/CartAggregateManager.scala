@@ -4,7 +4,7 @@ import java.util.UUID
 
 import akka.actor.Props
 import akka.event.LoggingReceive
-import domain.AggregateRoot.GetState
+import domain.AggregateRoot.{Remove, GetState}
 import domain.CartAggregate
 
 object CartAggregateManager {
@@ -13,6 +13,7 @@ object CartAggregateManager {
 
   case class AddCart(price: Double) extends Command
   case class GetCart(id: String) extends Command
+  case class DeleteCart(id: String) extends Command
 
   def props: Props = Props(new CartAggregateManager)
 }
@@ -29,6 +30,8 @@ class CartAggregateManager extends AggregateManager {
       processAggregateCommand(id, Initialize(price))
     case GetCart(id) =>
       processAggregateCommand(id, GetState)
+    case DeleteCart(id) =>
+      processAggregateCommand(id, Remove)
   }
 
   override def aggregateProps(id: String): Props = CartAggregate.props(id)

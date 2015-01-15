@@ -8,8 +8,8 @@ object AggregateManager {
 
   trait Command
 
-  val maxChildren = 40
-  val childrenToKillAtOnce = 20
+  val maxChildren = 10
+  val childrenToKillAtOnce = 5
 
   case class PendingCommand(sender: ActorRef, targetProcessorId: String, command: AggregateRoot.Command)
 }

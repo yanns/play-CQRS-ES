@@ -11,6 +11,7 @@ object CartAggregate {
   case class Cart(id: String, price: Double) extends State
 
   case class Initialize(price: Double) extends Command
+  case class Delete(price: Double) extends Command
 
   case class CartInitialized(price: Double) extends Event
   case object CartRemoved extends Event
@@ -53,7 +54,7 @@ class CartAggregate(id: String) extends AggregateRoot {
   }
 
   val removed = LoggingReceive {
-    case GetState =>
+    case GetState | Remove =>
       respond()
     case KillAggregate =>
       context.stop(self)
