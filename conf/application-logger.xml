@@ -13,6 +13,7 @@
     <logger name="application" level="DEBUG" />
     <logger name="service" level="DEBUG" />
     <logger name="domain" level="DEBUG" />
+    <logger name="akka.persistence.mongo.journal.MyJournal" level="DEBUG" />
 
     <root level="ERROR">
         <appender-ref ref="STDOUT" />
