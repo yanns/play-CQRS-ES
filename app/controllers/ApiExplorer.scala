@@ -54,6 +54,11 @@ object ApiExplorer extends Controller {
         """{
           |  "price": 56.93
           |}""".stripMargin
+
+      case ("POST", u) if u.startsWith("/api/users") =>
+        """{
+          |  "email": "user@domain"
+          |}""".stripMargin
     }
 
     if (examples.isDefinedAt(endPoint.httpVerb, endPoint.uri))
