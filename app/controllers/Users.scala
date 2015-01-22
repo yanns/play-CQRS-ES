@@ -69,7 +69,7 @@ object Users extends Controller {
 
   val userAggregateManager = Global.system.actorOf(UserAggregateManager.props)
 
-  def sendCmd(cmd: Command): Future[Anygi] = {
+  def sendCmd(cmd: Command): Future[Any] = {
     import akka.pattern.ask
     import scala.concurrent.duration._
 
