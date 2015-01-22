@@ -13,6 +13,7 @@ libraryDependencies ++= {
     "org.webjars" % "jquery" % "2.1.1",
     "com.typesafe.akka"       %%  "akka-actor"      % akkaVersion,
     "com.typesafe.akka"       %%  "akka-slf4j"      % akkaVersion,
-    "com.typesafe.akka"       %%  "akka-persistence-experimental" % akkaVersion
+    "com.typesafe.akka"       %%  "akka-persistence-experimental" % akkaVersion,
+    "com.github.ironfish"     %% "akka-persistence-mongo-casbah"  % "0.7.5"
   )
 }

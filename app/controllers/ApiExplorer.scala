@@ -50,7 +50,7 @@ object ApiExplorer extends Controller {
 
   def addExample(endPoint: EndPoint): EndPoint = {
     val examples: PartialFunction[(String, String), String] = {
-      case ("POST", "/api/carts") =>
+      case ("POST", u) if u.startsWith("/api/carts") =>
         """{
           |  "price": 56.93
           |}""".stripMargin

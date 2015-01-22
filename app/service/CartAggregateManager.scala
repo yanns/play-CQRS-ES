@@ -13,6 +13,7 @@ object CartAggregateManager {
 
   case class AddCart(price: Double) extends Command
   case class GetCart(id: String) extends Command
+  case class UpdatePriceCmd(id: String, price: Double) extends Command
   case class DeleteCart(id: String) extends Command
 
   def props: Props = Props(new CartAggregateManager)
@@ -30,6 +31,8 @@ class CartAggregateManager extends AggregateManager {
       processAggregateCommand(id, Initialize(price))
     case GetCart(id) =>
       processAggregateCommand(id, GetState)
+    case UpdatePriceCmd(id, price) =>
+      processAggregateCommand(id, UpdatePrice(price))
     case DeleteCart(id) =>
       processAggregateCommand(id, Remove)
   }

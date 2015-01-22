@@ -9,6 +9,7 @@ GET     /api/carts                  controllers.Carts.list
 GET     /api/carts/:id              controllers.Carts.get(id)
 DELETE  /api/carts/:id              controllers.Carts.delete(id)
 POST    /api/carts                  controllers.Carts.add
+POST    /api/carts/:id              controllers.Carts.update(id)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

@@ -11,9 +11,11 @@ object CartAggregate {
   case class Cart(id: String, price: Double) extends State
 
   case class Initialize(price: Double) extends Command
+  case class UpdatePrice(price: Double) extends Command
   case class Delete(price: Double) extends Command
 
   case class CartInitialized(price: Double) extends Event
+  case class PriceUpdated(price: Double) extends Event
   case object CartRemoved extends Event
 
   def props(id: String): Props = Props(new CartAggregate(id))
@@ -30,6 +32,11 @@ class CartAggregate(id: String) extends AggregateRoot {
     case CartInitialized(price) =>
       context.become(created)
       state = Cart(id, price)
+    case PriceUpdated(price) =>
+      state match {
+        case c: Cart => state = c.copy(price = price)
+        case _ => // ignore
+      }
     case CartRemoved =>
       context.become(removed)
       state = Removed
@@ -49,6 +56,8 @@ class CartAggregate(id: String) extends AggregateRoot {
       persist(CartRemoved)(afterEventPersisted)
     case GetState =>
       respond()
+    case UpdatePrice(price) =>
+      persist(PriceUpdated(price))(afterEventPersisted)
     case KillAggregate =>
       context.stop(self)
   }

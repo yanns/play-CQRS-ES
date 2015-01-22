@@ -22,10 +22,10 @@ object Carts extends Controller {
   def list = TODO
 
 
+  def noPrice = Future.successful(BadRequest(error("please set the 'price' field")))
+
   def add = Action.async(parse.json) { request =>
     val price = (request.body \ "price").asOpt[Double]
-
-    def noPrice = Future.successful(BadRequest(error("please set the 'price' field")))
 
     price.fold(noPrice) { p =>
       sendCmd(AddCart(p)) map {
@@ -46,6 +46,17 @@ object Carts extends Controller {
   def delete(id: String) = Action.async {
     sendCmd(DeleteCart(id)) map {
       case _ => NoContent
+    }
+  }
+
+
+  def update(id: String) = Action.async(parse.json) { request =>
+    val price = (request.body \ "price").asOpt[Double]
+
+    price.fold(noPrice) { p =>
+      sendCmd(UpdatePriceCmd(id, p)) map {
+        case c: Cart => Created(Json.toJson(c))
+      }
     }
   }
 
